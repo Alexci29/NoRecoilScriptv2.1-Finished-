@@ -55,6 +55,8 @@ def newKey():
         else:
                 if(key==""):
                         CurrentKey.config(text="Current key : EMPTY")
+                        tkinter.messagebox.showerror('Key error', 'Current key Empty or Invalid Key enter\n\nValid keys entrys: \n\n f1 to f12 \n\n CapsLock \n\n Supr \n\n Num_lock  \n\n Tab \n\n Ctrl \n\n Backspace \n\n Enter ')
+
                 else:
                         CurrentKey.config(text="Current key : "+key.upper())
         return key
