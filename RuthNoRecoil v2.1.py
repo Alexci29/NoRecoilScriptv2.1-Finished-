@@ -42,7 +42,7 @@ def saveKey():
         key = KeyCombobox.get()
         return key
         
-"""Simple prueba"""
+"""On press the setted key change the status mode"""
 def on_key_press():
         VK_F1 = win32api.GetKeyState(0x70)
         VK_F2 = win32api.GetKeyState(0x71)
