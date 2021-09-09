@@ -2,22 +2,18 @@
 import tkinter as tkinter
 from tkinter import *
 from tkinter import messagebox, ttk
-import os
 import win32api
-import pyautogui
 import winsound
-import random
-import keyboard
 import time
 
 """Main Screen Configuration"""
 root = Tk()
 root.title('Ruth NoRecoil')
 root.config(bg='#400040')
-root.iconphoto(False, tkinter.PhotoImage(file='img\icon.png'))
+"""root.iconbitmap('img/icon.ico')"""
 root.resizable(0,0)
 """Config to set app at the center screen when open it"""
-window_width,window_height=400,620
+window_width,window_height=320,480
 screen_width = root.winfo_screenwidth()
 screen_height= root.winfo_screenheight()
 position_top = int(screen_height/2 - window_height/2)
@@ -34,7 +30,7 @@ def StatusChange():
         if(StatusMode['text']=="OFF"):
                 time.sleep(0.2)
                 StatusMode.config(text="ON", fg="lightgreen")
-                winsound.Beep(1000,400)
+                winsound.Beep(1000,420)
                 return True
         elif(StatusMode['text']=="ON"):
                 time.sleep(0.2)
@@ -110,7 +106,7 @@ root.after(100,recoil)
 """Title frame box that contains label with the script name (not app name)"""
 Title = Frame(root, width=600)
 Title.pack()
-Title = Label(Title,text="RuthNoRecoil Script V2.1", width=600, padx=80, pady=27, bg='#000000', fg="white", font=("Segoe UI", 13, "italic", "bold")).pack()
+Title = Label(Title,text="RuthNoRecoil Script V2.1", width=600, padx=80, pady=20, bg='#000000', fg="white", font=("Segoe UI", 13, "italic", "bold")).pack()
 
 """Frame where sees the script status (Off=no active / On = active)
    the status change when the setted start/stop key is pressed"""
@@ -124,7 +120,7 @@ StatusMode.pack(pady=5)
 """On/Off LabelFrame for key config (start/stop script)"""
 """Creating the labelFrame"""
 ConfigKeyLabelFrame = LabelFrame(root, text="Script config",font=("Segoe UI", 12, "italic", "bold"), bg='#400040', fg="white")
-ConfigKeyLabelFrame.pack(anchor="w",padx=10, ipadx=120, ipady=20)
+ConfigKeyLabelFrame.pack(anchor="w",padx=10, ipadx=100, ipady=15)
 
 """Empty margin (ingore this)"""
 margin1= Label(ConfigKeyLabelFrame, bg='#400040')
@@ -132,16 +128,16 @@ margin1.pack()
 
 """Setting label text"""
 KeyLabel = Label(ConfigKeyLabelFrame, text="On/Off Key", bg='#400040', font=("Segoe UI", 11, "bold"), fg="darkgrey")
-KeyLabel.place(x=60,y=11)
+KeyLabel.place(x=55,y=7)
 
 """Key options combobox"""
 KeyCombobox = ttk.Combobox(ConfigKeyLabelFrame, state="readonly", values=["F1","F2","F3","F4","F5","F6","F7","F8","F9","F11","F12","ENTER","SUPR","CAPSLOCK","NUM_LOCK"], width=10, font=("Segoe UI", 10))
-KeyCombobox.place(x=195,y=15)
+KeyCombobox.place(x=155,y=10)
 
 """Recoil values LabelFrame config (Down/Up/Left/Right)"""
 """Recoil config label frame"""
 RecoilConfig  = LabelFrame(root, text="Recoil config", font=("Segoe UI",12,"bold","italic"), fg="white", bg='#400040')
-RecoilConfig.pack(anchor="w",padx=10, ipadx=120, ipady=95, pady=10)
+RecoilConfig.pack(anchor="w",padx=10, ipadx=100, ipady=65, pady=10)
 
 """Empty margin"""
 recoilEmptyMargin = Label(RecoilConfig, bg='#400040')
@@ -152,39 +148,35 @@ recoilDown = Label(RecoilConfig, text="Recoil Down", bg='#400040', font=("Segoe 
 recoilDown.place(x=20,y=7)
 recoilDownEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
 recoilDownEntry.insert(0,"0")
-recoilDownEntry.place(x=35,y=37)
+recoilDownEntry.place(x=35,y=30)
 
 """Recoil UP config label and entry"""
 recoilUp = Label(RecoilConfig, text="Recoil Up", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-recoilUp.place(x=260,y=7)
+recoilUp.place(x=200,y=7)
 recoilUpEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
 recoilUpEntry.insert(0,"0")
-recoilUpEntry.place(x=270,y=37)
+recoilUpEntry.place(x=210,y=30)
 
 """Recoil LEFT config label and entry"""
 recoilLeft = Label(RecoilConfig, text="Recoil Left", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-recoilLeft.place(x=20,y=85)
+recoilLeft.place(x=20,y=80)
 recoilLeftEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
 recoilLeftEntry.insert(0,"0")
-recoilLeftEntry.place(x=35,y=115)
+recoilLeftEntry.place(x=35,y=105)
 
 """Recoil RIGHT config label and entry"""
 recoilRight = Label(RecoilConfig, text="Recoil Right", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-recoilRight.place(x=250,y=85)
+recoilRight.place(x=200,y=80)
 recoilRightEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
 recoilRightEntry.insert(0,"0")
-recoilRightEntry.place(x=270,y=115)
-
-"""Recoil SAVE configs BUTTON"""
-recoilSaveButton = Button(RecoilConfig, command=saveRecoil, text="Save Recoil Config", activebackground='#400040', bg='#400040',padx=5, activeforeground="white", fg="lightgreen", font=("Segoe UI", 10, "bold"))
-recoilSaveButton.place(x=100,y=160)
+recoilRightEntry.place(x=210,y=105)
 
 """Happy face on the center of recoil config label frame"""
 happyFace = Label(RecoilConfig, text="♥‿♥", bg='#400040', font=("Segoe UI", 20, "bold"), fg="pink")
-happyFace.place(x=150,y=55)
+happyFace.place(x=120,y=45)
 
 """Working on updates message"""
 updates = Label(root, text="WORKING ON UPDATES (v.2.2) \n(Add and remove weapons menu,\nWeapon image recognition)", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-updates.place(x=65,y=510)
+updates.place(x=55,y=390)
 
 root.mainloop()
