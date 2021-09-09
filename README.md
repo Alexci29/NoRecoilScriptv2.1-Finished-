@@ -1,4 +1,4 @@
-# NoRecoilScriptv2.1-notFinished-
+# NoRecoilScriptv2.1-Finished-
 RuthNoRecoil is a personal challenge just to create a no recoil script, to extend my knowledge.
 
 The published version (v2.1) is not finalized at the moment.
