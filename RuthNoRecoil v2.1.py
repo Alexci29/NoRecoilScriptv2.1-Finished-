@@ -4,7 +4,10 @@ from tkinter import *
 from tkinter import messagebox, ttk
 import os
 import win32api
+import pyautogui
 import winsound
+import random
+import keyboard
 import time
 
 """Main Screen Configuration"""
@@ -14,7 +17,7 @@ root.config(bg='#400040')
 root.iconphoto(False, tkinter.PhotoImage(file='img\icon.png'))
 root.resizable(0,0)
 """Config to set app at the center screen when open it"""
-window_width,window_height=320,480
+window_width,window_height=400,620
 screen_width = root.winfo_screenwidth()
 screen_height= root.winfo_screenheight()
 position_top = int(screen_height/2 - window_height/2)
@@ -31,18 +34,20 @@ def StatusChange():
         if(StatusMode['text']=="OFF"):
                 time.sleep(0.2)
                 StatusMode.config(text="ON", fg="lightgreen")
-                winsound.Beep(1000,200)
+                winsound.Beep(1000,400)
+                return True
         elif(StatusMode['text']=="ON"):
                 time.sleep(0.2)
                 StatusMode.config(text="OFF", fg="red")
-                winsound.Beep(2500,200)
+                winsound.Beep(2500,400)
+                return False
 
-"""Saving setted key when click Save Key button"""
+"""Setted key"""
 def saveKey():
         key = KeyCombobox.get()
         return key
         
-"""On press the setted key change the status mode"""
+"""Changing script status when pressing the setted key"""
 def on_key_press():
         VK_F1 = win32api.GetKeyState(0x70)
         VK_F2 = win32api.GetKeyState(0x71)
@@ -60,23 +65,48 @@ def on_key_press():
         VK_RETURN = win32api.GetKeyState(0x0D)
         VK_CAPITAL = win32api.GetKeyState(0x14)
         VK_NumLOCK = win32api.GetKeyState(0x90)
+        VK_NUM0  = win32api.GetKeyState(0x30)
+        VK_NUM1  = win32api.GetKeyState(0x31)
+        VK_NUM2  = win32api.GetKeyState(0x32)
+        VK_NUM3  = win32api.GetKeyState(0x33)
+        VK_NUM4  = win32api.GetKeyState(0x34)
+        VK_NUM5  = win32api.GetKeyState(0x35)
+        VK_NUM6  = win32api.GetKeyState(0x36)
+        VK_NUM7  = win32api.GetKeyState(0x37)
+        VK_NUM8  = win32api.GetKeyState(0x38)
+        VK_NUM9  = win32api.GetKeyState(0x39)
+        
         if(VK_F1<0 and "F1"==saveKey() or VK_F2<0 and "F2"==saveKey() or VK_F3<0 and "F3"==saveKey() or VK_F4<0 and "F4"==saveKey()
         or VK_F5<0 and "F5"==saveKey() or VK_F6<0 and "F6"==saveKey() or VK_F7<0 and "F7"==saveKey() or VK_F8<0 and "F8"==saveKey()
         or VK_F9<0 and "F9"==saveKey() or VK_F11<0 and "F11"==saveKey() or VK_F12<0 and "F12"==saveKey() or VK_Delete<0 and "SUPR"==saveKey() 
-        or VK_RETURN<0 and "ENTER"==saveKey() or VK_CAPITAL<0 and "CAPSLOCK"==saveKey() 
-        or VK_NumLOCK<0 and "NUM_LOCK"==saveKey()):
+        or VK_RETURN<0 and "ENTER"==saveKey() or VK_CAPITAL<0 and "CAPSLOCK"==saveKey() or VK_NumLOCK<0 and "NUM_LOCK"==saveKey()):
             StatusChange()
             
         root.after(100,on_key_press)
 root.after(100,on_key_press)
 
+"""Saved recoil message when saved"""
 def saveRecoil():
         tkinter.messagebox.showinfo('Recoil config','Recoil config saved correctlly!')
+
+"""Detect left click button pressed"""        
+def mouse_down():
+        lmb_state = win32api.GetKeyState(0x01)
+        return lmb_state < 0
+        root.after(100,mouse_down)
+root.after(100,mouse_down)
+
+"""If left click is pressed and the status mode is ON, mouse scroll down"""
+def recoil():
+        if (mouse_down() and StatusMode['text']=='ON'):
+            print("Left click pressed")
+        root.after(100,recoil)
+root.after(100,recoil)        
 
 """Title frame box that contains label with the script name (not app name)"""
 Title = Frame(root, width=600)
 Title.pack()
-Title = Label(Title,text="RuthNoRecoil Script V2.1", width=600, padx=80, pady=20, bg='#000000', fg="white", font=("Segoe UI", 14, "italic", "bold")).pack()
+Title = Label(Title,text="RuthNoRecoil Script V2.1", width=600, padx=80, pady=27, bg='#000000', fg="white", font=("Segoe UI", 13, "italic", "bold")).pack()
 
 """Frame where sees the script status (Off=no active / On = active)
    the status change when the setted start/stop key is pressed"""
@@ -90,7 +120,7 @@ StatusMode.pack(pady=5)
 """On/Off LabelFrame for key config (start/stop script)"""
 """Creating the labelFrame"""
 ConfigKeyLabelFrame = LabelFrame(root, text="Script config",font=("Segoe UI", 12, "italic", "bold"), bg='#400040', fg="white")
-ConfigKeyLabelFrame.pack(anchor="w",padx=10, ipadx=100, ipady=15)
+ConfigKeyLabelFrame.pack(anchor="w",padx=10, ipadx=120, ipady=20)
 
 """Empty margin (ingore this)"""
 margin1= Label(ConfigKeyLabelFrame, bg='#400040')
@@ -98,16 +128,16 @@ margin1.pack()
 
 """Setting label text"""
 KeyLabel = Label(ConfigKeyLabelFrame, text="On/Off Key", bg='#400040', font=("Segoe UI", 11, "bold"), fg="darkgrey")
-KeyLabel.place(x=50,y=7)
+KeyLabel.place(x=60,y=11)
 
 """Key options combobox"""
-KeyCombobox = ttk.Combobox(ConfigKeyLabelFrame, values=["F1","F2","F3","F4","F5","F6","F7","F8","F9","F11","F12","ENTER","SUPR","CAPSLOCK","NUM_LOCK","0","1","2","3","4","5","6","7","8","9"], width=10, font=("Segoe UI", 10, "bold"))
-KeyCombobox.place(x=160,y=11)
+KeyCombobox = ttk.Combobox(ConfigKeyLabelFrame, state="readonly", values=["F1","F2","F3","F4","F5","F6","F7","F8","F9","F11","F12","ENTER","SUPR","CAPSLOCK","NUM_LOCK"], width=10, font=("Segoe UI", 10))
+KeyCombobox.place(x=195,y=15)
 
 """Recoil values LabelFrame config (Down/Up/Left/Right)"""
 """Recoil config label frame"""
 RecoilConfig  = LabelFrame(root, text="Recoil config", font=("Segoe UI",12,"bold","italic"), fg="white", bg='#400040')
-RecoilConfig.pack(anchor="w",padx=10, ipadx=100, ipady=75, pady=10)
+RecoilConfig.pack(anchor="w",padx=10, ipadx=120, ipady=95, pady=10)
 
 """Empty margin"""
 recoilEmptyMargin = Label(RecoilConfig, bg='#400040')
@@ -117,36 +147,36 @@ recoilEmptyMargin.pack()
 recoilDown = Label(RecoilConfig, text="Recoil Down", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
 recoilDown.place(x=20,y=7)
 recoilDownEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
-recoilDownEntry.place(x=35,y=30)
+recoilDownEntry.place(x=35,y=37)
 
 """Recoil UP config label and entry"""
 recoilUp = Label(RecoilConfig, text="Recoil Up", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-recoilUp.place(x=200,y=7)
+recoilUp.place(x=260,y=7)
 recoilUpEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
-recoilUpEntry.place(x=210,y=30)
+recoilUpEntry.place(x=270,y=37)
 
 """Recoil LEFT config label and entry"""
 recoilLeft = Label(RecoilConfig, text="Recoil Left", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-recoilLeft.place(x=20,y=60)
+recoilLeft.place(x=20,y=85)
 recoilLeftEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
-recoilLeftEntry.place(x=35,y=85)
+recoilLeftEntry.place(x=35,y=115)
 
 """Recoil RIGHT config label and entry"""
 recoilRight = Label(RecoilConfig, text="Recoil Right", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-recoilRight.place(x=200,y=60)
+recoilRight.place(x=250,y=85)
 recoilRightEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
-recoilRightEntry.place(x=210,y=85)
+recoilRightEntry.place(x=270,y=115)
 
 """Recoil SAVE configs BUTTON"""
 recoilSaveButton = Button(RecoilConfig, command=saveRecoil, text="Save Recoil Config", activebackground='#400040', bg='#400040',padx=5, activeforeground="white", fg="lightgreen", font=("Segoe UI", 10, "bold"))
-recoilSaveButton.place(x=85,y=130)
+recoilSaveButton.place(x=100,y=160)
 
 """Happy face on the center of recoil config label frame"""
 happyFace = Label(RecoilConfig, text="♥‿♥", bg='#400040', font=("Segoe UI", 20, "bold"), fg="pink")
-happyFace.place(x=120,y=42)
+happyFace.place(x=150,y=55)
 
 """Working on updates message"""
 updates = Label(root, text="WORKING ON UPDATES (v.2.2) \n(Add and remove weapons menu,\nWeapon image recognition)", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
-updates.place(x=55,y=405)
+updates.place(x=65,y=510)
 
 root.mainloop()
