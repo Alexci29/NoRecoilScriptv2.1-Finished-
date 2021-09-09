@@ -42,12 +42,12 @@ def StatusChange():
                 winsound.Beep(2500,400)
                 return False
 
-"""Setted key"""
+"""Saving setted key when click Save Key button"""
 def saveKey():
         key = KeyCombobox.get()
         return key
         
-"""Changing script status when pressing the setted key"""
+"""Simple prueba"""
 def on_key_press():
         VK_F1 = win32api.GetKeyState(0x70)
         VK_F2 = win32api.GetKeyState(0x71)
@@ -80,16 +80,15 @@ def on_key_press():
         or VK_F5<0 and "F5"==saveKey() or VK_F6<0 and "F6"==saveKey() or VK_F7<0 and "F7"==saveKey() or VK_F8<0 and "F8"==saveKey()
         or VK_F9<0 and "F9"==saveKey() or VK_F11<0 and "F11"==saveKey() or VK_F12<0 and "F12"==saveKey() or VK_Delete<0 and "SUPR"==saveKey() 
         or VK_RETURN<0 and "ENTER"==saveKey() or VK_CAPITAL<0 and "CAPSLOCK"==saveKey() or VK_NumLOCK<0 and "NUM_LOCK"==saveKey()):
-            StatusChange()
-            
+            StatusChange()  
         root.after(100,on_key_press)
 root.after(100,on_key_press)
 
-"""Saved recoil message when saved"""
+"""Message when recoil config is saved"""
 def saveRecoil():
         tkinter.messagebox.showinfo('Recoil config','Recoil config saved correctlly!')
 
-"""Detect left click button pressed"""        
+"""Detecting when the left click button is pressed"""        
 def mouse_down():
         lmb_state = win32api.GetKeyState(0x01)
         return lmb_state < 0
@@ -98,10 +97,15 @@ root.after(100,mouse_down)
 
 """If left click is pressed and the status mode is ON, mouse scroll down"""
 def recoil():
+        Down = recoilDownEntry.get()
+        Up = recoilUpEntry.get()
+        Left = recoilLeftEntry.get()
+        Right = recoilRightEntry.get()
         if (mouse_down() and StatusMode['text']=='ON'):
-            print("Left click pressed")
+            win32api.mouse_event(0x0001, int(Left), int(Down))
+            win32api.mouse_event(0x0001, -abs(int(Left)), -abs(int(Up)))
         root.after(100,recoil)
-root.after(100,recoil)        
+root.after(100,recoil)          
 
 """Title frame box that contains label with the script name (not app name)"""
 Title = Frame(root, width=600)
@@ -147,24 +151,28 @@ recoilEmptyMargin.pack()
 recoilDown = Label(RecoilConfig, text="Recoil Down", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
 recoilDown.place(x=20,y=7)
 recoilDownEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
+recoilDownEntry.insert(0,"0")
 recoilDownEntry.place(x=35,y=37)
 
 """Recoil UP config label and entry"""
 recoilUp = Label(RecoilConfig, text="Recoil Up", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
 recoilUp.place(x=260,y=7)
 recoilUpEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
+recoilUpEntry.insert(0,"0")
 recoilUpEntry.place(x=270,y=37)
 
 """Recoil LEFT config label and entry"""
 recoilLeft = Label(RecoilConfig, text="Recoil Left", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
 recoilLeft.place(x=20,y=85)
 recoilLeftEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
+recoilLeftEntry.insert(0,"0")
 recoilLeftEntry.place(x=35,y=115)
 
 """Recoil RIGHT config label and entry"""
 recoilRight = Label(RecoilConfig, text="Recoil Right", bg='#400040', font=("Segoe UI", 10, "bold"), fg="lightgreen")
 recoilRight.place(x=250,y=85)
 recoilRightEntry = Entry(RecoilConfig, width=6, font=("Segoe UI", 10, "bold"), fg="black", justify="center")
+recoilRightEntry.insert(0,"0")
 recoilRightEntry.place(x=270,y=115)
 
 """Recoil SAVE configs BUTTON"""
