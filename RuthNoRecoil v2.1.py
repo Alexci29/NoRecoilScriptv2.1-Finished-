@@ -25,7 +25,7 @@ def welcome():
         tkinter.messagebox.showinfo('RuthNoRecoil', 'Welcome to RuthNoRecoil v2.1!\n\nUsable for any game, enjoy it!')
 welcome()
 
-"""Changing the status mode (ON/OFF) when clicking the setted key"""    
+"""Changing the status mode (ON/OFF)"""    
 def StatusChange():
         if(StatusMode['text']=="OFF"):
                 time.sleep(0.2)
@@ -43,7 +43,7 @@ def saveKey():
         key = KeyCombobox.get()
         return key
         
-"""Simple prueba"""
+"""When pressing the setted key, execute StatusChange() function"""
 def on_key_press():
         VK_F1 = win32api.GetKeyState(0x70)
         VK_F2 = win32api.GetKeyState(0x71)
@@ -79,10 +79,6 @@ def on_key_press():
             StatusChange()  
         root.after(100,on_key_press)
 root.after(100,on_key_press)
-
-"""Message when recoil config is saved"""
-def saveRecoil():
-        tkinter.messagebox.showinfo('Recoil config','Recoil config saved correctlly!')
 
 """Detecting when the left click button is pressed"""        
 def mouse_down():
